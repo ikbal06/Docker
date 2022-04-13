@@ -42,3 +42,18 @@ kodu silmek için-- docker container rm diyip id den birkaç değer yazıyoruz b
 sh ile shell e bağlanılıyor
 
 (--interactive)+(--tty)= (--it) => komutlarımı bu container içinde çalıştır ve bunu sağlamak adına sözde bir terminal bağlantısı kurar.
+
+çalışan bir komuta docker container exec(uygula) komutu ile bağlanılır.
+docker container exec -it websunucu sh (web sunucu isimli container üzerinde uygula neyi uygula sh komutunu)
+bu adımdan sonra ls -l diyerek içindeki dosyaları görebilirim. 
+
+cd /usr/local/apache2/htdocs diyip içine girdim -ps yaparak içindeki uygulamaları görebilirim. exit deyip içinde çıkabilirim ve hala containerim çalışır durumda
+
+kill 1 diyerek ilk uyuglamayı durdurdum containerin ilk uygulaması durduğundan container de durdu.
+
+containera bir şey eklediğim zaman o imageye eklenmez bndan dolayı container durduğunda o eklediğim de durur.
+
+docker container prune sistmedeki durdurulmuş tüm uygulamaları siler.
+docker image prune -a (tüm imageleri siler).
+
+docker image pull apline (dockerhub üzerindeki apline image nı sisteme çeker)
