@@ -2,7 +2,7 @@
 Uygulama geliştirmek, dağıtmak ve çalıştırmak için kullanılan açık bir platformdur.
 Docker Engine: 
 
--Docker Daemon: objeleri yaratma ve yönetme(linuxe kurar containerle çalıştırır)
+-Docker Daemon: objeleri(image) yaratma ve yönetme(linuxe kurar containerle çalıştırır)
 
 -Docker Rest Api: uygulamalar api ile konuşur ve ne yapması gerektiğini söyler(dış dünyayla görüşme)
 
@@ -10,7 +10,7 @@ Docker Engine:
 
 Image: bir uygulamanın çalışması için gerekli tüm kütüphanlerin ve ögelerin paketlenmiş haline denir. İçinde çekirdek(kernel) yok.Bir şablondur.
 
-Container: Imagenin çalışır hali. Şablondan oluşturulan bir kopyadır. İşletim sistemi yoktur. Uygulama sanallaştırılır. Sanal makineden daha hızlıdır. Paketleyip taşıma kolaydır.
+Container: Imagenin çalışır hali. Şablondan oluşturulan bir kopyadır. İşletim sistemi yoktur. Uygulama sanallaştırılır. Sanal makineden daha hızlıdır. Paketleyip taşıma kolaydır.[bildiğimiz konteynerdan geliyor adı]
 
 Sanal makine: atıl kapasite(boş) yok. Tam bir işletim sistmei barındırır. Fiziksel makine sanallaştırılır.
 
@@ -53,7 +53,35 @@ kill 1 diyerek ilk uyuglamayı durdurdum containerin ilk uygulaması durduğunda
 
 containera bir şey eklediğim zaman o imageye eklenmez bndan dolayı container durduğunda o eklediğim de durur.
 
-docker container prune sistmedeki durdurulmuş tüm uygulamaları siler.
+docker container prune sistmedeki durdurulmuş tüm uygulamaları siler(prune: kesmek-budamak).
 docker image prune -a (tüm imageleri siler).
 
 docker image pull apline (dockerhub üzerindeki apline image nı sisteme çeker)
+
+Özetleyecek olursak;
+
+-Containerlar tek bir uygulamayı çalıştırmak için oluşturulurlar.
+
+-Bu tek bir uygulamayı çalıştırmak için tüm gereksinimlerin önceden hazırladığı imageden yaratılır.
+
+-Container içinde çalışan ana uygulama durduğunda container da durdurulur. Sistemin çalşmaya devam etmesini sağlamak için sistem aynı imageden aynı ayarda yeni bir container yaratabilir.
+
+-Container içindeki uygulamada bir sıkıntı oluşursa container durdurulup yerne yeni bir container yaratrılır. Eğer sıkıntı ayarlarla ilgiliyse image yaratırken çözülür ve yeni bir image ile yeni bir container yaratılır.
+
+Containerler sıklıkla silinip sürekli yenisi oluşturulduğundan(tek kullanımlıktır diyebilirim) önemli verileri orada saklamamalıyım. Bu container dışı veri saklama işine ise volume denir(volume hacim demek ya depo gibi düşünülebilir).
+
+Container ı silsem de oluşturduğum volume silinmez
+
+Bir volume ü biden fazla containera bağlayabilirim.
+
+Eğer bir volume mount edildiği(bağlandığı) klasör yoksa bu klasör yaratılır ve volumeün içinde hangi dosyalar varsa klasörde o dosyalar gözükür.
+
+Eğer ki bir volume imaj içerisinde bulunan bir klasöre mount edilirse:
+
+-Klasör boşsa; olan dosyalar klasörde gözükür
+
+-Klasörde dosya varsa volume boşsa; klasördeki dosyalar volume kopyalanır
+
+-Klasörde dosya var ya da yok fakat volume de dosyalar varsa; klasörün içinde volumede olan dosyayı görürsün.
+
+En sonunda sen o klasöre ne yazarsan yaz o volume yazılır ve container silindiği zaman silinmez.
