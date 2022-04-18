@@ -29,13 +29,15 @@ Her image varsayılan olması için bir uygulama seçer(içinde birden fazla uyg
 
 Varsayılan uygulama yerine başka bir uygulama ile de containeri başlatabilirim.
 
-docker container ls diyince buna random bir isim verdi ama ben dcoker container run --name X ozgurozturknet/adanzyedocker java app1 diyince artık ismi X oldu
+docker container ls diyince buna random bir isim verdi ama ben docker container run --name X ozgurozturknet/adanzyedocker java app1 diyince artık ismi X oldu
 
 docker container run -d -p 80:80  [buradaki -d arka planda çalıştırıyor] böylece bana hemen bir id verdi
+(-d ile arka planda çalışmayı sağlıyor
+-p ile istediğim port ta çalışmamı sağlıyor : soldaki docker ın çalışacağı sistem portu sağdaki sağdaki imagenin(uygulamanın) portu)
 
 docker ps (-a)= docker container ls (-a)
 
-kodu silmek için-- docker container rm diyip id den birkaç değer yazıyoruz birden fazla ise bir boşluk koyup diğerini yazıyoruz bu silme işlemi duran kodlar içindir çalışan kodları silemeyiz.
+kodu silmek için-- docker container rm diyip id den birkaç değer yazıyoruz birden fazla ise bir boşl uk koyup diğerini yazıyoruz bu silme işlemi duran kodlar içindir çalışan kodları silemeyiz.
 
 Önce çalışan kodları durdurmak gerekir docker container stop id sonra da rm ile silebilirsin ya da (burası daha kullanışlı) docker container rm -f id diyip de çalışan kodu önce durdurmuş sonra da silmiş oluruz.
 
@@ -54,6 +56,7 @@ kill 1 diyerek ilk uyuglamayı durdurdum containerin ilk uygulaması durduğunda
 containera bir şey eklediğim zaman o imageye eklenmez bndan dolayı container durduğunda o eklediğim de durur.
 
 docker container prune sistmedeki durdurulmuş tüm uygulamaları siler(prune: kesmek-budamak).
+
 docker image prune -a (tüm imageleri siler).
 
 docker image pull apline (dockerhub üzerindeki apline image nı sisteme çeker)
@@ -85,3 +88,69 @@ Eğer ki bir volume imaj içerisinde bulunan bir klasöre mount edilirse:
 -Klasörde dosya var ya da yok fakat volume de dosyalar varsa; klasörün içinde volumede olan dosyayı görürsün.
 
 En sonunda sen o klasöre ne yazarsan yaz o volume yazılır ve container silindiği zaman silinmez.
+
+---------------------CONTAINER102---------------------------
+
+Docker Network Driver
+
+Konteynerların birbileri ve dışarıyla iletişimini docker network objeleri ile sağlanır. Bu objeleri de driverlarla sağlanıyor.
+
+Bridge: varsayılan driver (ping atılabilir)
+
+Host: bazı ihtiyaç hallerinde kullanılır(herhangi bir izolasyon olmadan çalışmaya ihtiyaç duyulduğunda)(üstünde çalıştığı makineye yapışması arada bir şey olmaması)
+üzerine bağlı olduğu sistemin altyapısını kullanır
+
+Macvlan: konteynerlara direkt bir mac adresi tanınması gerektiğinde
+
+None: konteynerin hiçbir ağ bağlantısı olmasını istemiyorsak
+
+Overlay: ayrı hostların aynı ağda çalışıyormuş gibi çalışması istendiğinde
+
+docker network ls networkleri sıraladı 
+
+docker network inspect bridge (özelliklerini sıraladı)
+inspect i daha detaylı bilgi istediğim zaman kullanabilirim. Mesela image leri sıralarım içinden birini inspectle çalıştırısam seçtiğim hakkında daha detay öğrenebilirm [docker image inspect X]
+
+ctrl pq : konteyner ile bağlantıyı kestik ama kapatmadık
+
+bir bilgisayarın başka bilgisayar arasındakş bağlantı durumunu kontrol etme işlemine ping atmak denir.
+
+docker container run -it --name deneme1 --net host ozgurozturknet/adanzyedocker sh 
+[öncelikle bunu playwithdocer sayfasında yapabilirim kendi bilgisayarımda linux işlemcisi sanal olduğu için
+(içeriğe gelecek olursak deneme1 adında konteyner oluşturdum sonra host network driverına tarafından oluşturuluş network objesine bağlandım)]
+
+ifconfig ile ağ ayarlarını görebilirim
+
+docker container run -d --publish 8080:80 ozgurozturknet/adanzyedocker
+(bu host üzerinde konteyner yarat ve hostun 8080 portuna gelen bütün istekleri de yarattığım konteyner 80 portunun üstüne gönder)
+
+-p host_port:container_port
+
+yukarıdaki konteyner açıldığı zaman hostun 8080 portuna istek gönderdiğim zaman alınacak ve konteynerin içindeki 80 portuna gönderilecek ve cevap oradan gelecek 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
