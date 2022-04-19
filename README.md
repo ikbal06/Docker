@@ -1,6 +1,6 @@
 # Docker
 Uygulama geliştirmek, dağıtmak ve çalıştırmak için kullanılan açık bir platformdur.
-Docker Engine: 
+Docker Engine: uygulamaları oluşturmak 
 
 -Docker Daemon: objeleri(image) yaratma ve yönetme(linuxe kurar containerle çalıştırır)
 
@@ -12,7 +12,7 @@ Image: bir uygulamanın çalışması için gerekli tüm kütüphanlerin ve öge
 
 Container: Imagenin çalışır hali. Şablondan oluşturulan bir kopyadır. İşletim sistemi yoktur. Uygulama sanallaştırılır. Sanal makineden daha hızlıdır. Paketleyip taşıma kolaydır.[bildiğimiz konteynerdan geliyor adı]
 
-Sanal makine: atıl kapasite(boş) yok. Tam bir işletim sistmei barındırır. Fiziksel makine sanallaştırılır.
+Sanal makine: atıl kapasite(boş) yok. Tam bir işletim sistemi barındırır. Fiziksel makine sanallaştırılır.
 
 ------CONTAINER101-----------
 
@@ -25,7 +25,7 @@ Shell, bir kullanıcı ile bir işletim sistemi çekirdeği arasında bir arayü
 
 docker container ls ile oluşturulmuş containerler gözükür -a yaparak sadece çalışan ve durdurulmuşları da görebiliriz.
 
-Her image varsayılan olması için bir uygulama seçer(içinde birden fazla uygulama olabilir ve sadece bir tane uygulama seçeiblir) o uygulama çalışırken(bir tane uygulama seçtim-otomotik çalışması için bir tane seçmek zorundayım- ama birden fazla uygulama kullanabilirim) container çalışır uygulama kapandığında container de kapanır.
+Her image varsayılan olması için bir uygulama seçer(içinde birden fazla uygulama olabilir ve sadece bir tane uygulama seçebilir) o uygulama çalışırken(bir tane uygulama seçtim -otomotik çalışması için bir tane seçmek zorundayım- ama birden fazla uygulama kullanabilirim) container çalışır uygulama kapandığında container de kapanır.
 
 Varsayılan uygulama yerine başka bir uygulama ile de containeri başlatabilirim.
 
@@ -37,7 +37,7 @@ docker container run -d -p 80:80  [buradaki -d arka planda çalıştırıyor] b�
 
 docker ps (-a)= docker container ls (-a)
 
-kodu silmek için-- docker container rm diyip id den birkaç değer yazıyoruz birden fazla ise bir boşl uk koyup diğerini yazıyoruz bu silme işlemi duran kodlar içindir çalışan kodları silemeyiz.
+kodu silmek için-- docker container rm diyip id den birkaç değer yazıyoruz birden fazla ise bir boşluk koyup diğerini yazıyoruz bu silme işlemi duran kodlar içindir çalışan kodları silemeyiz.
 
 Önce çalışan kodları durdurmak gerekir docker container stop id sonra da rm ile silebilirsin ya da (burası daha kullanışlı) docker container rm -f id diyip de çalışan kodu önce durdurmuş sonra da silmiş oluruz.
 
@@ -53,9 +53,9 @@ cd /usr/local/apache2/htdocs diyip içine girdim -ps yaparak içindeki uygulamal
 
 kill 1 diyerek ilk uyuglamayı durdurdum containerin ilk uygulaması durduğundan container de durdu.
 
-containera bir şey eklediğim zaman o imageye eklenmez bndan dolayı container durduğunda o eklediğim de durur.
+containera bir şey eklediğim zaman o imageye eklenmez bundan dolayı container durduğunda o eklediğim de durur.
 
-docker container prune sistmedeki durdurulmuş tüm uygulamaları siler(prune: kesmek-budamak).
+docker container prune sistmedeki durdurulmuş tüm uygulamaları siler(prune: kesmek).
 
 docker image prune -a (tüm imageleri siler).
 
@@ -93,7 +93,7 @@ En sonunda sen o klasöre ne yazarsan yaz o volume yazılır ve container silind
 
 Docker Network Driver
 
-Konteynerların birbileri ve dışarıyla iletişimini docker network objeleri ile sağlanır. Bu objeleri de driverlarla sağlanıyor.
+Konteynerların birbileri ve dışarıyla iletişimi docker network objeleri ile sağlanır. Bu objeler de driverlarla sağlanır.
 
 Bridge: varsayılan driver (ping atılabilir)
 
@@ -113,7 +113,7 @@ inspect i daha detaylı bilgi istediğim zaman kullanabilirim. Mesela image leri
 
 ctrl pq : konteyner ile bağlantıyı kestik ama kapatmadık
 
-bir bilgisayarın başka bilgisayar arasındakş bağlantı durumunu kontrol etme işlemine ping atmak denir.
+bir bilgisayarın başka bilgisayar arasındaki bağlantı durumunu kontrol etme işlemine ping atmak denir.
 
 docker container run -it --name deneme1 --net host ozgurozturknet/adanzyedocker sh 
 [öncelikle bunu playwithdocer sayfasında yapabilirim kendi bilgisayarımda linux işlemcisi sanal olduğu için
@@ -128,6 +128,59 @@ docker container run -d --publish 8080:80 ozgurozturknet/adanzyedocker
 
 yukarıdaki konteyner açıldığı zaman hostun 8080 portuna istek gönderdiğim zaman alınacak ve konteynerin içindeki 80 portuna gönderilecek ve cevap oradan gelecek 
 
+Konteynerlar arası network izolasyonu sağlamak istersek ayrı bridge network yaratarak yapabiliriz.
+
+Varsayılan dışında ip aralıkları tanımlanabilir
+
+Aynı networke bağlı konteynerlar birbirlerinin isimlerini çözebilirler
+
+Kullanıcı tanımlı konteynerın bağlı olduğu bridge networkle bağlantısını kesemezsin
+
+Kullanıcının yarattığı bridge networkleri bağlarsın da bağlantısını kesersin de
+
+-dit (-d + -it) interaktif bağlantı kur, arka planda yap
+
+attach çalışan konteynerı etkileşimşi hale getirmek için kullanılır bunu yazınca 
+/usr/src/myapp tarzı bir şey gelir onun içine yazarım
+
+ctrl c ile ping durdurulur
+
+--subnet alt ağ
+
+--ip-range=10.10.10.0/24 >> subnetin dağıtacağı ip adres aralığı
+
+--gateway=10.10.10.10 konteynera bağlanan bridge network
+
+
+Standart Input-Output-Error: o komutun ya da terminalin bizimle iletişim kurma yolu
+
+stdin(0): uygulamanın giriş akışıdır(klavyeden yazdıklarım)
+
+stdout(1): uygulamanın genel çıktısıdır(uygulama bir cevap oluşturursa bunu ekranda gösterir)
+
+stderr(2): hata mesajı için
+
+docker logs --details con1 (con1 hakkında daha detaylı bilgi için)
+
+docker logs -t con1 (ile tarihli)
+
+docker logs --until 2022-04-19T10:54:50.942949800Z con1 (bana bu tarihe kadar olan logları göster demek)
+
+until yerine since dersem de o tarihten sonraki logları bana gösterir
+
+docker logs --tail 3 con1 (oluşan son 3 logu gösterir)
+
+docker logs -f con1 (konteyner üzerinde oluşan canlı logları görmek için (-f =follow)) ctrl c ile de o ekrandan çıkabilirm
+
+docker container run --log-driver splunk ngnix (splunk logunu çalıştırmış oldum nginx ten konteyner oluştumuş oldum (şu an splunk driverı ayarlı olmadığından hata verdi ayarlı olsaydı bu konteyner merkezi değişmiş olacaktı))
+
+docker top con1 (con1 in proseslerini verir)
+
+docker stats (docker üzerinde çalışan tüm konteynerları(ve durumlarını) verir ve yeniler)
+
+docker stats X (x konteynerının durumunu verir)
+
+docker container run -d --memory=100m --memory-swap=200m ozgurozturknet/adanzyedocker (ben sistemme 100mb lık yer açtım eğer ihtiyaç varsa 100 daha kullanabilirsin)
 
 
 
